@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
 SRC = f"{ROOT}/03_編集/素材/2026-10-24_ひとり反省会"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-24_ひとり反省会_仮編集.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-24_ひとり反省会_仮編集_v2.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1024_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -14,11 +14,12 @@ CREAM = (250, 238, 214)      # 心の声（淡い色）
 ACCENT = (255, 226, 140)     # 「閉会」だけ淡い黄色
 BROWN = (90, 70, 54)         # 仮置き（ベージュ地）用
 BEIGE_BG = (222, 208, 188)
+PINK = (244, 167, 196, 225)   # 文字のうしろの帯
 
 # (開始, 終了, 行のリスト[[(文字, 色)...]...], 文字サイズ, 中心y比率, 帯あり, 影色)
 TEXTS = [
     (0.0, 4.0, [[("休みなのに、", WHITE)], [("ひとり反省会がはじまる", WHITE)]], 74, 0.74, False),
-    (4.0, 9.5, [[("「あの返事、まずかったかな」", CREAM)], [("「変に思われたかも」", CREAM)]], 62, 0.24, True),
+    (4.0, 9.5, [[("「あの返事、まずかったかな」", WHITE)], [("「変に思われたかも」", WHITE)]], 62, 0.24, True),
     (9.5, 14.0, [[("それだけ、相手を", WHITE)], [("大切に思っていたから。", WHITE)]], 70, 0.40, True),
     (14.0, 18.5, [[("今週の反省会は、", WHITE)], [("ここで", WHITE), ("閉会", ACCENT), ("にしませんか。", WHITE)]], 76, 0.40, True),
     (18.5, 23.0, [[("①気になる場面を書き出し、", WHITE)], [("ノートを閉じる", WHITE)]], 66, 0.30, True),
@@ -30,37 +31,24 @@ TEXTS = [
 
 
 def text_png(i, lines, size, cy, band):
+    """白い文字＋黒いふち、うしろにピンクの帯（アカウント主の指定・2026-10-23）"""
     font = ImageFont.truetype(FONT, size)
+    stroke = max(4, size // 13)
     gap = int(size * 0.45)
     widths = [sum(font.getlength(s) for s, _ in ln) for ln in lines]
     lh = size
     block_h = len(lines) * lh + (len(lines) - 1) * gap
     top = int(H * cy - block_h / 2)
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    if band:
-        bw = max(widths) + 90
-        b = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(b).rounded_rectangle(
-            [(W - bw) / 2, top - 45, (W + bw) / 2, top + block_h + 45], radius=28, fill=(120, 96, 72, 95))
-        img = Image.alpha_composite(img, b)
-    dark_text = all(c == BROWN for ln in lines for _, c in ln)
-    if not dark_text:
-        sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        d = ImageDraw.Draw(sh)
-        for li, ln in enumerate(lines):
-            x = (W - widths[li]) / 2
-            y = top + li * (lh + gap)
-            for s, _ in ln:
-                d.text((x + 3, y + 4), s, font=font, fill=(40, 30, 20, 170))
-                x += font.getlength(s)
-        sh = sh.filter(ImageFilter.GaussianBlur(5))
-        img = Image.alpha_composite(img, sh)
+    bw = max(widths) + 100
+    ImageDraw.Draw(img).rounded_rectangle(
+        [(W - bw) / 2, top - 40, (W + bw) / 2, top + block_h + 48], radius=30, fill=PINK)
     d = ImageDraw.Draw(img)
     for li, ln in enumerate(lines):
         x = (W - widths[li]) / 2
         y = top + li * (lh + gap)
         for s, c in ln:
-            d.text((x, y), s, font=font, fill=c + (255,))
+            d.text((x, y), s, font=font, fill=c + (255,), stroke_width=stroke, stroke_fill=(0, 0, 0, 255))
             x += font.getlength(s)
     p = f"{WORK}/t{i}.png"
     img.save(p)
