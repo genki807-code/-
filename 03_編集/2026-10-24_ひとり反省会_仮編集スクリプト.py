@@ -23,7 +23,7 @@ TEXTS = [
     (14.0, 18.5, [[("今週の反省会は、", WHITE)], [("ここで", WHITE), ("閉会", ACCENT), ("にしませんか。", WHITE)]], 76, 0.40, True),
     (18.5, 23.0, [[("①気になる場面を書き出し、", WHITE)], [("ノートを閉じる", WHITE)]], 66, 0.30, True),
     (23.0, 27.5, [[("②友だちが同じ返事をしたら", WHITE)], [("気になる？", WHITE)]], 66, 0.30, False),
-    (27.5, 32.0, [[("③シャツのしわをのばすなど、", WHITE)], [("手を動かしてみる", WHITE)]], 64, 0.62, True),
+    (27.5, 32.0, [[("③シャツのしわをのばすなど、", WHITE)], [("手を動かしてみる", WHITE)]], 60, 0.47, True),
     (32.0, 35.5, [[("今週も、", WHITE)], [("よく乗りきりましたね。", WHITE)]], 72, 0.36, False),
     (35.5, 41.5, [[("考えが止まらない夜のために、", WHITE)], [("保存しておいてくださいね。", WHITE)]], 60, 0.36, False),
 ]
@@ -99,7 +99,8 @@ warm = "colortemperature=temperature=5800:mix=0.6"
 a = clip("a", f"{SRC}/01.mp4", 10.0, 4.25, speed=0.7, eq=f"eq=gamma=0.97:saturation=0.92,{warm}")
 b = clip("b", f"{SRC}/02.mp4", 3.0, 6.0, eq=f"eq=brightness=0.04:contrast=0.93,{warm}")
 c = clip("c", f"{SRC}/03.mp4", 4.0, 9.25, eq=f"eq=brightness=-0.03,colortemperature=temperature=6000:mix=0.4")
-d = clip("d", f"{SRC}/04.mp4", 17.5, 4.5, eq=f"eq=brightness=0.03,{warm}")
+# ほかの机が入らないよう、手元と紙のある下のほうに寄せて拡大する
+d = clip("d", f"{SRC}/04.mp4", 17.5, 4.5, eq=f"crop=iw/1.4:ih/1.4:(iw-iw/1.4)/2:ih-ih/1.4,eq=brightness=0.03,{warm}")
 e = clip("e", f"{SRC}/05.mp4", 5.0, 4.5, eq=f"eq=brightness=0.04:saturation=1.08,{warm}")
 f = clip("f", f"{SRC}/06.mp4", 5.0, 4.5, eq="eq=gamma=0.95,colortemperature=temperature=6000:mix=0.4")
 g = clip("g", f"{SRC}/07.mp4", 0.1, 9.5, eq="eq=saturation=0.9:gamma=1.0")
