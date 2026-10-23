@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
 SRC = f"{ROOT}/03_編集/素材/2026-10-24_ひとり反省会"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-24_ひとり反省会_仮編集_v3.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-24_ひとり反省会_仮編集_v4.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1024_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -32,6 +32,8 @@ TEXTS = [
 
 def text_png(i, lines, size, cy, band):
     """白い文字＋黒いふち、うしろにピンクの帯（アカウント主の指定・2026-10-23）"""
+    # テロップには「、」「。」を出さない（アカウント主の指定・2026-10-23）
+    lines = [[(s.replace("、", "").replace("。", ""), c) for s, c in ln] for ln in lines]
     font = ImageFont.truetype(FONT, size)
     stroke = max(4, size // 13)
     gap = int(size * 0.45)
