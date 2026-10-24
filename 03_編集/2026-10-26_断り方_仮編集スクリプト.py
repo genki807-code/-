@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-26_断り方_仮編集.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-26_断り方_仮編集_v3.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1025_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -48,6 +48,13 @@ XF = 0.5  # 背景どうしの、ふわっとした切り替え（秒）
 SRC = f"{ROOT}/03_編集/素材/2026-10-26_断り方"
 FOOTAGE = {
     # 素材が届いたら、ここに足す（例）0: ("01.mp4", 1.0, "eq=saturation=0.95"),
+    0: ("01.jpg", 0, "eq=saturation=0.95"),  # 木の積み石を積む手元（静止画）
+    1: ("02.jpg", 0, "eq=saturation=0.9"),   # グラスに水を注ぐ（静止画）
+    2: ("03.jpg", 0, "eq=saturation=0.95"),  # 手のひらの花（静止画。画面3・4）
+    3: ("04.jpg", 0, "eq=saturation=0.95"),  # 置き時計のイラスト（静止画）
+    4: ("05.jpg", 0, "eq=saturation=0.9"),   # むいたみかん（静止画）
+    5: ("06.jpg", 0, "eq=saturation=0.85"),  # ビー玉（静止画）
+    6: ("07.jpg", 0, "eq=saturation=0.9"),   # 玄関の鍵をあける手元（静止画。画面8・9）
 }
 
 
