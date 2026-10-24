@@ -50,6 +50,7 @@ SRC = f"{ROOT}/03_編集/素材/2026-10-25_日曜の夜"
 FOOTAGE = {
     0: ("01.mp4", 2.0, "eq=saturation=0.85:gamma=0.97"),           # 夕焼けの空と木のシルエット
     1: ("02.mp4", 2.0, "eq=gamma=1.4:brightness=0.02:saturation=0.8"),  # 雨の夜の手すりと明かり（暗いので少し明るく）
+    2: ("03.mp4", 2.0, "eq=saturation=0.95"),  # 夜の寝室、あたたかいランプの明かり
     6: ("07.mp4", 3.0, "eq=brightness=0.02,colortemperature=temperature=5800:mix=0.4"),  # お皿のカヌレ（明日の夜の楽しみ）
     7: ("08.mp4", 0.5, "eq=saturation=0.9"),  # ピンクの砂時計（ゆっくり始めればいい）
 }
