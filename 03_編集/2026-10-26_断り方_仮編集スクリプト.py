@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-26_断り方_仮編集_v3.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-26_断り方_仮編集_v4.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1025_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -16,6 +16,7 @@ TOTAL = 41.5
 
 WHITE = (255, 255, 255)
 ACCENT = (255, 226, 140)     # 「大事」だけ淡い黄色（サムネAと同じ強調）
+TEXT_SCALE = 0.85  # テロップを少し小さく（アカウント主の指定・2026-10-24）
 PINK = (244, 167, 196, 225)  # 文字のうしろの帯
 
 # (開始, 終了, 行のリスト[[(文字, 色)...]...], 文字サイズ)
@@ -113,6 +114,7 @@ def bokeh(i, color, n, size, rise, dur):
 def text_png(i, lines, size):
     """白い文字＋黒いふち、うしろにピンクの帯。画面の中央に置く"""
     lines = [[(s.replace("、", "").replace("。", ""), c) for s, c in ln] for ln in lines]
+    size = int(size * TEXT_SCALE)
     font = ImageFont.truetype(FONT, size)
     stroke = max(4, size // 13)
     gap = int(size * 0.45)
