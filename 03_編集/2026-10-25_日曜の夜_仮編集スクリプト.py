@@ -51,6 +51,7 @@ FOOTAGE = {
     0: ("01.mp4", 2.0, "eq=saturation=0.85:gamma=0.97"),           # 夕焼けの空と木のシルエット
     1: ("02.mp4", 2.0, "eq=gamma=1.4:brightness=0.02:saturation=0.8"),  # 雨の夜の手すりと明かり（暗いので少し明るく）
     2: ("03.mp4", 2.0, "eq=saturation=0.95"),  # 夜の寝室、あたたかいランプの明かり
+    3: ("04.mp4", 0.2, "eq=contrast=1.25:brightness=-0.04:saturation=1.2,colorbalance=bs=0.25:bm=0.12:rs=-0.05"),  # 星空（少し青く）
     6: ("07.mp4", 3.0, "eq=brightness=0.02,colortemperature=temperature=5800:mix=0.4"),  # お皿のカヌレ（明日の夜の楽しみ）
     7: ("08.mp4", 0.5, "eq=saturation=0.9"),  # ピンクの砂時計（ゆっくり始めればいい）
 }
