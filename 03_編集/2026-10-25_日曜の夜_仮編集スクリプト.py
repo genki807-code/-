@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集_v2.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1025_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -43,6 +43,16 @@ SCENES = [
     (32.5, TOTAL, (30, 22, 20), (48, 34, 28), (245, 180, 110), 20, (40, 120), 10, "lamp"),   # 夜の部屋の間接照明
 ]
 XF = 0.5  # 背景どうしの、ふわっとした切り替え（秒）
+
+# アカウント主がくれた素材（縦に切り出し済み）。置いてある場面は、描いた背景の代わりにこちらを使う
+# 場面の番号（0から）: (ファイル名, 使い始める秒, 色の調整)
+SRC = f"{ROOT}/03_編集/素材/2026-10-25_日曜の夜"
+FOOTAGE = {
+    0: ("01.mp4", 2.0, "eq=saturation=0.85:gamma=0.97"),           # 夕焼けの空と木のシルエット
+    1: ("02.mp4", 2.0, "eq=gamma=1.4:brightness=0.02:saturation=0.8"),  # 雨の夜の手すりと明かり（暗いので少し明るく）
+    6: ("07.mp4", 3.0, "eq=brightness=0.02,colortemperature=temperature=5800:mix=0.4"),  # お皿のカヌレ（明日の夜の楽しみ）
+    7: ("08.mp4", 0.5, "eq=saturation=0.9"),  # ピンクの砂時計（ゆっくり始めればいい）
+}
 
 
 def gradient(top, bottom):
@@ -132,8 +142,15 @@ for i, (st, en, top, bottom, bc, n, size, rise, deco) in enumerate(SCENES):
     s = st - (XF / 2 if i > 0 else 0)
     e = en + (XF / 2 if i < len(SCENES) - 1 else 0)
     dur = e - s
-    bg, bk = background(i, top, bottom, deco), bokeh(i, bc, n, size, rise, dur)
     out = f"{WORK}/c{i}.mp4"
+    if i in FOOTAGE and os.path.exists(f"{SRC}/{FOOTAGE[i][0]}"):
+        name, ss, eq = FOOTAGE[i]
+        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{ss}", "-t", f"{dur + 0.1}", "-i", f"{SRC}/{name}", "-an",
+             "-vf", f"{eq},scale=1080:1920,setsar=1,fps=30,format=yuv420p",
+             "-t", f"{dur}", "-c:v", "libx264", "-crf", "16", "-preset", "fast", out])
+        clips.append(out)
+        continue
+    bg, bk = background(i, top, bottom, deco), bokeh(i, bc, n, size, rise, dur)
     run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-t", f"{dur}", "-i", bg, "-loop", "1", "-t", f"{dur}", "-i", bk,
          "-filter_complex", f"[0][1]overlay=0:'-{rise}*t',fps=30,format=yuv420p,setsar=1",
          "-t", f"{dur}", "-c:v", "libx264", "-crf", "16", "-preset", "fast", out])
