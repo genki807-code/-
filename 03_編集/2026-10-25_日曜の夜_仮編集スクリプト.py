@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集_v2.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集_v3.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1025_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
@@ -52,6 +52,8 @@ FOOTAGE = {
     1: ("02.mp4", 2.0, "eq=gamma=1.4:brightness=0.02:saturation=0.8"),  # 雨の夜の手すりと明かり（暗いので少し明るく）
     2: ("03.mp4", 2.0, "eq=saturation=0.95"),  # 夜の寝室、あたたかいランプの明かり
     3: ("04.mp4", 0.2, "eq=contrast=1.25:brightness=-0.04:saturation=1.2,colorbalance=bs=0.25:bm=0.12:rs=-0.05"),  # 星空（少し青く）
+    4: ("05.jpg", 0, "eq=saturation=0.9"),  # 付箋（静止画。ゆっくりズーム）
+    5: ("06.jpg", 0, "eq=brightness=0.02,colortemperature=temperature=5800:mix=0.4"),  # 椅子にかけた服（静止画。ゆっくりズーム）
     6: ("07.mp4", 3.0, "eq=brightness=0.02,colortemperature=temperature=5800:mix=0.4"),  # お皿のカヌレ（明日の夜の楽しみ）
     7: ("08.mp4", 0.5, "eq=saturation=0.9"),  # ピンクの砂時計（ゆっくり始めればいい）
 }
@@ -147,6 +149,14 @@ for i, (st, en, top, bottom, bc, n, size, rise, deco) in enumerate(SCENES):
     out = f"{WORK}/c{i}.mp4"
     if i in FOOTAGE and os.path.exists(f"{SRC}/{FOOTAGE[i][0]}"):
         name, ss, eq = FOOTAGE[i]
+        if name.endswith(".jpg"):
+            # 静止画は、2倍の大きさにしてから少しずつ寄る（1.0→1.06倍）。動きがカクカクしないようにするため
+            frames = int(round(dur * 30)) + 1
+            run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-i", f"{SRC}/{name}",
+                 "-vf", f"scale=2160:3840,zoompan=z='1+0.06*on/{frames}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frames}:s=1080x1920:fps=30,{eq},setsar=1,format=yuv420p",
+                 "-frames:v", f"{frames}", "-c:v", "libx264", "-crf", "16", "-preset", "fast", out])
+            clips.append(out)
+            continue
         run(["ffmpeg", "-v", "error", "-y", "-ss", f"{ss}", "-t", f"{dur + 0.1}", "-i", f"{SRC}/{name}", "-an",
              "-vf", f"{eq},scale=1080:1920,setsar=1,fps=30,format=yuv420p",
              "-t", f"{dur}", "-c:v", "libx264", "-crf", "16", "-preset", "fast", out])
