@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = "/home/user/-"
-OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集_v3.mp4"
+OUT = sys.argv[1] if len(sys.argv) > 1 else f"{ROOT}/03_編集/2026-10-25_日曜の夜_仮編集_v4.mp4"
 WORK = tempfile.mkdtemp(prefix="build_1025_")
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 W, H = 1080, 1920
