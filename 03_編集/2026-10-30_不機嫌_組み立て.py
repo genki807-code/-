@@ -54,11 +54,11 @@ def text_layer(lines, kind):
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     if kind == 'hook':
-        sizes, gap, band, stroke = [130, 142], 40, 150, 6
+        sizes, gap, band, stroke = [130, 142], 40, 235, 7
     elif kind == 'small':
-        sizes, gap, band, stroke = [60, 60], 34, 140, 4
+        sizes, gap, band, stroke = [60, 60], 34, 225, 5
     else:
-        sizes, gap, band, stroke = [64, 64], 36, 140, 4
+        sizes, gap, band, stroke = [64, 64], 36, 225, 5
     if kind == 'emph':
         sizes = [64, 72]
     fonts = [ImageFont.truetype(FONT, s) for s in sizes]
@@ -69,7 +69,7 @@ def text_layer(lines, kind):
     pad_x, pad_y = 30, 45
     bw = max(widths) + pad_x * 2
     d.rounded_rectangle([(W - bw) / 2, y - pad_y, (W + bw) / 2, y + total_h + pad_y],
-                        radius=24, fill=(15, 15, 15, band))
+                        radius=24, fill=(236, 122, 152, band))  # ブランドのピンク
     colors = ['white', 'white']
     if kind == 'emph':
         colors[1] = (255, 240, 170)
