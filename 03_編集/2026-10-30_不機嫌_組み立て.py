@@ -27,7 +27,7 @@ SCREENS = [
     (19, 23, ['①ひと息つきに、', '少しだけ席を離れる'], 0.3, 0.3, 'normal'),
     (23, 27.5, ['②温かい飲み物で、', '自分の機嫌を先にとる'], 0.3, 0.3, 'normal'),
     (27.5, 31.5, ['③心の中で', '「これは私の係じゃない」'], 0.3, 0.3, 'soft'),
-    (31.5, 35.5, ['その優しさ、', 'まず自分に使ってね。'], 0.3, 0.5, 'normal'),
+    (31.5, 35.5, ['その優しさ、', 'まず自分に使ってね。'], 0.3, 0.3, 'normal'),
     (35.5, 41, ['空気が重い日に見返せるよう、', '保存してくださいね。'], 0.5, 0, 'small'),
 ]
 
@@ -66,7 +66,7 @@ def text_layer(lines, kind):
     total_h = sum(sizes) + gap
     cy = 860 if kind == 'hook' else 880
     y = cy - total_h / 2
-    pad_x, pad_y = 50, 45
+    pad_x, pad_y = 30, 45
     bw = max(widths) + pad_x * 2
     d.rounded_rectangle([(W - bw) / 2, y - pad_y, (W + bw) / 2, y + total_h + pad_y],
                         radius=24, fill=(15, 15, 15, band))
