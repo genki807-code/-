@@ -137,13 +137,13 @@ def main():
             filters.append(
                 f"[{i}:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
                 f"fps={FPS},eq=brightness=-0.02:saturation=0.85,setsar=1,format=yuv420p,"
-                f"trim=duration={length},setpts=PTS-STARTPTS[c{i}]")
+                f"trim=duration={length},setpts=PTS-STARTPTS,settb=1/{FPS}[c{i}]")
         else:
             missing.append(name)
             png = os.path.join(tmp, f"bg{i}.png")
             make_gradient_png(*colors, png)
             args += ["-loop", "1", "-framerate", f"{FPS}", "-t", f"{length}", "-i", png]
-            filters.append(f"[{i}:v]format=yuv420p,setsar=1,trim=duration={length},setpts=PTS-STARTPTS[c{i}]")
+            filters.append(f"[{i}:v]format=yuv420p,setsar=1,trim=duration={length},setpts=PTS-STARTPTS,settb=1/{FPS}[c{i}]")
 
     # カットをつなぐ
     prev, t = "c0", CUTS[0][0]
@@ -153,7 +153,8 @@ def main():
         if trans == "fade":
             filters.append(f"[{prev}][c{i}]xfade=transition=fade:duration={FADE}:offset={t}[{lab}]")
         else:
-            filters.append(f"[{prev}][c{i}]concat=n=2:v=1:a=0[{lab}]")
+            # 時間の単位をそろえる（concat のあとに xfade が来てもつながるように）
+            filters.append(f"[{prev}][c{i}]concat=n=2:v=1:a=0,settb=1/{FPS}[{lab}]")
         prev, t = lab, t + CUTS[i][0]
     s, d = END_DARK
     filters.append(f"[{prev}]trim=duration={TOTAL},fade=out:st={s}:d={d}[bg]")
