@@ -11,7 +11,7 @@ v3 の見た目（アカウント主の指定）：
 - 0秒の1コマ目からテロップを出す（最初の画面はフェードなしでいきなり出す）
 - 最初の効果音はアカウント主が付ける。このスクリプトでは音を入れない（BGM も投稿時に Instagram で付ける）
 
-- 03_編集/素材/2026-10-29_疲れのサイン/ に 01.mp4〜07.mp4 があれば、その動画を使う。
+- 03_編集/素材/2026-10-29_疲れのサイン/ に 01〜07 の動画（.mp4）か写真（.jpg / .png）があれば、それを使う。
 - まだ置いていないカットは、設計図の色の流れに合わせた「仮の背景」で作る。
 - 書き出し先：03_編集/2026-10-29_疲れのサイン_編集_v3.mp4
 
@@ -129,10 +129,14 @@ def main():
     # 背景（カット）。ふわっとつなぐカットは、重なるぶん 0.5秒長く用意する
     for i, (dur, name, colors, trans) in enumerate(CUTS):
         length = dur + (FADE if trans == "fade" else 0)
-        src = os.path.join(SOZAI, name)
-        if os.path.exists(src):
-            used.append(name)
-            args += ["-stream_loop", "-1", "-t", f"{length}", "-i", src]
+        # 動画（.mp4）がなければ、同じ番号の写真（.jpg / .jpeg / .png）を探す
+        stem = os.path.splitext(name)[0]
+        src = next((os.path.join(SOZAI, stem + ext) for ext in (".mp4", ".jpg", ".jpeg", ".png")
+                    if os.path.exists(os.path.join(SOZAI, stem + ext))), None)
+        if src:
+            used.append(os.path.basename(src))
+            loop = ["-stream_loop", "-1"] if src.endswith(".mp4") else ["-loop", "1", "-framerate", f"{FPS}"]
+            args += loop + ["-t", f"{length}", "-i", src]
             # 縦長に切り出し、明るさ・彩度を少し下げて色をそろえる
             filters.append(
                 f"[{i}:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
