@@ -2,7 +2,8 @@
 
 - お店：Cherish Palette（https://cherish-palette.jp/）
 - 確かめ方：アカウント主が 2026-11-01 に送ってくれた A8.net の「提携情報」画面のスクショ3枚
-- アカウント主の A8.net リンク：`https://px.a8.net/svt/ejp?a8mat=4BGAUX+BCFDRM+2ZQM+TSBE9&a8sns=tiktok`（TikTok 用。Instagram 用は作り直してもらう）
+- アカウント主の A8.net リンク：`https://px.a8.net/svt/ejp?a8mat=4BGAUX+BCFDRM+2ZQM+TSBE9&a8sns=tiktok`（TikTok 用）
+- **Instagram 用リンク（11/1）**：`https://px.a8.net/svt/ejp?a8mat=4BGAUX+BCFDRM+2ZQM+TSBE9&a8sns=instagram` ← プロフとストーリーズにはこれを使う
 - 商品リンクの飛び先は `https://cherish-palette.jp/` の中にする（A8.net の決まり）
 
 ---
