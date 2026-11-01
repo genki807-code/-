@@ -66,6 +66,7 @@ def bg(n):
         im = glow(im, lambda d, a: d.polygon([(420, 0), (660, 0), (900, 1100), (180, 1100)], fill=LIGHT + (a,)), 38, 60)
         def marks(d, a):
             bamiri(d, 260, 1330, WHITE + (90,))
+            bamiri(d, 540, 1330, GOLD + (180,))
             bamiri(d, 820, 1330, WHITE + (90,))
         return glow(im, marks, 0, 0)
     if n == 3:
@@ -181,7 +182,7 @@ def draw_lines(lines, y_range, left=None, boxes=False, layer=None):
             d.text((x, ty), t, font=f, fill=GOLD if g else WHITE)
             tw = d.textlength(t, font=f)
             if g and boxes:
-                gold_boxes.append((x - 20, ty - 16, x + tw + 20, ty + sz + 16))
+                gold_boxes.append((x - 16, ty - 8, x + tw + 16, ty + sz + 8))
             x += tw
         if left is not None and s.startswith(("「", "{", "芝", "確", "思")) and s:
             quote_top = ty if quote_top is None else quote_top
@@ -220,7 +221,7 @@ def disclaimer_layer():
         d.text(((W - tw) / 2, 1430 + i * 62), s, font=font(42), fill=WHITE)
     s = "※絵はイメージです"
     tw = d.textlength(s, font=font(42))
-    d.text((940 - tw, 940), s, font=font(42), fill=(255, 255, 255, 190))
+    d.text((940 - tw, 940), s, font=font(42), fill=WHITE)
     return lay
 
 
