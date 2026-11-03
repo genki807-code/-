@@ -31,11 +31,16 @@ def dashed_box(im, box, label):
 def main(out, guide):
     os.makedirs(out, exist_ok=True)
     # 1枚目：リールへの案内（まん中にリールを共有して置く）
-    im = k.bg(1)
+    im = k.gradient()  # 床の線のない背景（スポットライトだけ）
+    im = k.glow(im, lambda d, a: d.polygon([(470, 0), (610, 0), (920, 1560), (160, 1560)], fill=k.LIGHT + (a,)), 56, 60)
     pr(im)
     text(im, [("新しいリール出したよ", 56), ("ダンスも芝居もこなす人って", 60), ("{最初から器用}だと思わない？", 64)], (400, 680))
-    if guide: dashed_box(im, (240, 720, 840, 1380), "ここにリールを共有して置く")
-    text(im, [("草川拓弥さん（超特急）の", 52), ("セリフの覚え方の話は、リールで", 52), ("リールの後半で商品を紹介してるよ", 44)], (1420, 1650))
+    if guide: dashed_box(im, (240, 710, 840, 1330), "ここにリールを共有して置く")
+    text(im, [("草川拓弥さん（超特急）の", 52), ("セリフの覚え方の話はリールで見てね", 52), ("後半で商品を紹介してるよ", 44)], (1345, 1545))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 1555, k.W, 1665], fill=(0, 0, 0, 140))
+    for i, s2 in enumerate(["※紹介する商品は、", "草川さん・超特急とは関係ありません"]):
+        tw = d.textlength(s2, font=k.font(42)); d.text(((k.W - tw) / 2, 1563 + i * 50), s2, font=k.font(42), fill=k.WHITE)
     im.convert("RGB").save(os.path.join(out, "1枚目_リールの案内" + ("_置き場所つき" if guide else "") + ".png"))
     # 2枚目：商品の案内＋リンクスタンプ
     im = k.bg(8)
