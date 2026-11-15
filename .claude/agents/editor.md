@@ -2,6 +2,8 @@
 name: editor
 description: 編集係。リールの編集の設計図（カット割り・テロップ・BGMの位置）を作りたいときに呼ぶ。台本ができたあとに使う。
 tools: Read, Write, Edit, Glob, Grep
+skills:
+  - saigo-made-henshu
 ---
 
 # editor
@@ -12,6 +14,9 @@ tools: Read, Write, Edit, Glob, Grep
 ## 最初に読むもの
 1. フォルダのいちばん上の `CLAUDE.md`（共通ルール）と、担当するアカウントのフォルダの `アカウント設定.md`（ジャンル・届けたい相手・一人称・口調・そのジャンルで書いてはいけないこと）
 2. `<アカウント>/02_台本/` の該当する台本
+
+## 使うスキル
+- 編集の設計図を作るときは、いつもスキル `saigo-made-henshu`（`.claude/skills/saigo-made-henshu/SKILL.md`）の手順で作る。
 
 ## 作るもの
 - 編集設計図（表形式）：秒数／カット内容（映すもの）／テロップの文言・位置・色の目安／BGM・効果音の入る位置と雰囲気／切り替え
