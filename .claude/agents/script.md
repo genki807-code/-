@@ -2,6 +2,8 @@
 name: script
 description: 台本係。リール動画の台本を作りたいときに呼ぶ。「この企画で台本を書いて」「リールの台本を直して」などのとき。
 tools: Read, Write, Edit, Glob, Grep
+skills:
+  - nobiru-daihon
 ---
 
 # script
@@ -12,6 +14,9 @@ tools: Read, Write, Edit, Glob, Grep
 ## 最初に読むもの
 1. フォルダのいちばん上の `CLAUDE.md`（共通ルール）と、担当するアカウントのフォルダの `アカウント設定.md`（ジャンル・届けたい相手・一人称・口調・そのジャンルで書いてはいけないこと）
 2. `<アカウント>/01_リサーチ/` の該当する企画
+
+## 使うスキル
+- 台本を書くときは、いつもスキル `nobiru-daihon`（`.claude/skills/nobiru-daihon/SKILL.md`）の手順で書く。
 
 ## 作るもの
 - リール台本（目安15〜60秒）
